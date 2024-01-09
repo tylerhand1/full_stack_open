@@ -8,6 +8,15 @@ const Button = ({handleClick, text}) => {
   )
 }
 
+const StatisticsLine = ({text, value}) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  )
+}
+
 const Statistics = ({good, neutral, bad, all}) => {
   const getAvg = () => {
     const sum = (good * 1.0) + (neutral * 0) + (bad * -1)
@@ -28,12 +37,16 @@ const Statistics = ({good, neutral, bad, all}) => {
   return (
     <div>
       <h2>statistics</h2>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {all}</p>
-        <p>average {getAvg()}</p>
-        <p>positive {getPositive()}%</p>
+      <table>
+        <tbody>
+          <StatisticsLine text="good" value={good} />
+          <StatisticsLine text="neutral" value={neutral} />
+          <StatisticsLine text="bad" value={bad} />
+          <StatisticsLine text="all" value={all} />
+          <StatisticsLine text="average" value={parseFloat(getAvg()).toFixed(1)} />
+          <StatisticsLine text="positive" value={parseFloat(getPositive()).toFixed(1) + '%'} />
+        </tbody>
+      </table>
     </div>
   )
 }
