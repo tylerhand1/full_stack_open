@@ -8,6 +8,14 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
+
+    const found = persons.findIndex(person => person.name === newName)
+    if(found !== -1) {
+      // Found
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
+
     const newPerson = {
       name: newName,
       id: persons.length + 1
