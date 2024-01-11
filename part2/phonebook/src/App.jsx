@@ -2,8 +2,13 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1234567', id: 0 }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
+
+  const [filter, setFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setnewNumber] = useState('')
 
@@ -27,6 +32,10 @@ const App = () => {
     setnewNumber('')
   }
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -34,10 +43,19 @@ const App = () => {
   const handleNumberChange = (event) => {
     setnewNumber(event.target.value)
   }
+  // https://stackoverflow.com/questions/35235794/filter-strings-in-array-based-on-content-filter-search-value for filter
+  const numbersToShow = filter === ''
+    ? persons
+    : persons.filter(person => person.name.toUpperCase().indexOf(filter.toUpperCase()) !== -1)
 
   return (
     <div>
       <h2>Phonebook</h2>
+      filter: <input
+        value={filter}
+        onChange={handleFilterChange}
+      />
+      <h2>Add a New</h2>
       <form onSubmit={addName}>
         <div>
           name: <input 
@@ -56,7 +74,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person =>
+      {numbersToShow.map(person =>
         <p key={person.id}>{person.name} {person.number}</p>
       )}
     </div>
