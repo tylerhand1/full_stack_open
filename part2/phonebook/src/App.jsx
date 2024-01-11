@@ -45,6 +45,16 @@ const PersonForm = ({addName, newName, setNewName, newNumber, setNewNumber}) => 
   )
 }
 
+const Persons = ({numbersToShow}) => {
+  return (
+    <>
+      {numbersToShow.map(person =>
+        <p key={person.id}>{person.name} {person.number}</p>
+      )}
+    </>
+  )
+}
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -88,11 +98,8 @@ const App = () => {
       <Filter value={filter} setFilter={setFilter} />
       <h2>Add a New</h2>
       <PersonForm addName={addName} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setnewNumber} />
-      
       <h2>Numbers</h2>
-      {numbersToShow.map(person =>
-        <p key={person.id}>{person.name} {person.number}</p>
-      )}
+      <Persons numbersToShow={numbersToShow} />
     </div>
   )
 }
