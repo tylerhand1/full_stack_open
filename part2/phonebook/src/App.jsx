@@ -1,6 +1,8 @@
 import { useEffect, useState, useTransition } from 'react'
 import axios from 'axios'
 
+import ContactService from './services/contacts'
+
 const Filter = ({filter, setFilter}) => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
@@ -64,10 +66,10 @@ const App = () => {
   const [newNumber, setnewNumber] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    ContactService
+      .getAll()
+      .then(initialContacts => {
+        setPersons(initialContacts)
       })
   }, [])
 
@@ -87,10 +89,10 @@ const App = () => {
       id: `${persons.length + 1}`
     }
 
-    axios
-      .post(`http://localhost:3001/persons`, newPerson)
-      .then(response => {
-        setPersons(persons.concat(newPerson))
+    ContactService
+      .create(newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
         setNewName('')
         setnewNumber('')
       })
