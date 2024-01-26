@@ -3,6 +3,18 @@ import axios from 'axios'
 
 import ContactService from './services/contacts'
 
+const Notification = ({message, haveError}) => {
+  if(message === null) {
+    return null
+  }
+
+  return (
+    <div className={`message ${haveError ? 'error' : 'success'}`}>
+      {message}
+    </div>
+  )
+}
+
 const Filter = ({filter, setFilter}) => {
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
@@ -64,6 +76,8 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setnewNumber] = useState('')
+  const [message, setMessage] = useState(null)
+  const [haveError, setHaveError] = useState(false)
 
   useEffect(() => {
     ContactService
@@ -95,6 +109,11 @@ const App = () => {
             setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
             setNewName('')
             setnewNumber('')
+
+            setMessage(`Updated ${returnedPerson.name}`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
       }
       return
@@ -112,6 +131,11 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setnewNumber('')
+
+        setMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000) 
       })
   }
 
@@ -134,6 +158,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} haveError={haveError} />
       <Filter value={filter} setFilter={setFilter} />
       <h2>Add a New</h2>
       <PersonForm addName={addName} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setnewNumber} />
