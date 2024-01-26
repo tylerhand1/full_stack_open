@@ -48,11 +48,11 @@ const PersonForm = ({addName, newName, setNewName, newNumber, setNewNumber}) => 
   )
 }
 
-const Persons = ({numbersToShow}) => {
+const Persons = ({numbersToShow, delName}) => {
   return (
     <>
       {numbersToShow.map(person =>
-        <p key={person.id}>{person.name} {person.number}</p>
+        <p key={person.id}>{person.name} {person.number} <button onClick={() => delName(person.id)}>delete</button></p>
       )}
     </>
   )
@@ -98,6 +98,17 @@ const App = () => {
       })
   }
 
+  const delName = (id) => {
+    const msg = `Delete ${persons.find(person => person.id === id).name}?`
+    if(confirm(msg)) {
+      ContactService
+        .remove(id)
+        .then(delContact => {
+          setPersons(persons.filter(person => person.id !== delContact.id))
+        })
+    }    
+  }
+
   // https://stackoverflow.com/questions/35235794/filter-strings-in-array-based-on-content-filter-search-value for filter
   const numbersToShow = filter === ''
     ? persons
@@ -110,7 +121,7 @@ const App = () => {
       <h2>Add a New</h2>
       <PersonForm addName={addName} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setnewNumber} />
       <h2>Numbers</h2>
-      <Persons numbersToShow={numbersToShow} />
+      <Persons numbersToShow={numbersToShow} delName={delName} />
     </div>
   )
 }
