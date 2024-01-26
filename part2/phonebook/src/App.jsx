@@ -115,6 +115,15 @@ const App = () => {
               setMessage(null)
             }, 5000)
           })
+          .catch(error => {
+            setMessage(`Information of ${newPerson.name} has already been removed from the server`)
+            setHaveError(true)
+
+            setTimeout(() => {
+              setMessage(null)
+              setHaveError(false)
+            }, 5000)
+          })
       }
       return
     }
@@ -146,6 +155,15 @@ const App = () => {
         .remove(id)
         .then(returnedPerson => {
           setPersons(persons.filter(person => person.id !== returnedPerson.id))
+        })
+        .catch(error => {
+          setMessage(`Information of this user has already been removed from the server`)
+          setHaveError(true)
+
+          setTimeout(() => {
+            setMessage(null)
+            setHaveError(false)
+          }, 5000)
         })
     }    
   }
