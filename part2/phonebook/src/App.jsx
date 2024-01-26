@@ -79,7 +79,24 @@ const App = () => {
     const found = persons.findIndex(person => person.name === newName)
     if(found !== -1) {
       // Found
-      alert(`${newName} is already added to phonebook`)
+      const foundPerson = persons.find(person => person.name === newName)
+      const msg = `${foundPerson.name} is already added to phonebook, replace the old number with a new one?`
+      
+      if(confirm(msg)) {
+        const newPerson = {
+          name: newName,
+          number: newNumber,
+          id: foundPerson.id
+        }
+  
+        ContactService
+          .update(newPerson.id, newPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+            setNewName('')
+            setnewNumber('')
+          })
+      }
       return
     }
 
@@ -103,8 +120,8 @@ const App = () => {
     if(confirm(msg)) {
       ContactService
         .remove(id)
-        .then(delContact => {
-          setPersons(persons.filter(person => person.id !== delContact.id))
+        .then(returnedPerson => {
+          setPersons(persons.filter(person => person.id !== returnedPerson.id))
         })
     }    
   }
