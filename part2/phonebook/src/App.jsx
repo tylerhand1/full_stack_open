@@ -164,6 +164,12 @@ const App = () => {
             setMessage(null)
             setHaveError(false)
           }, 5000)
+          // Update contacts to reflect server
+          ContactService
+            .getAll()
+            .then(returnedContacts => {
+              setPersons(returnedContacts)
+            })
         })
     }    
   }
