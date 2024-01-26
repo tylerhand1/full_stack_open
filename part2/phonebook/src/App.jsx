@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import axios from 'axios'
 
 const Filter = ({filter, setFilter}) => {
@@ -84,11 +84,16 @@ const App = () => {
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
+      id: `${persons.length + 1}`
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setnewNumber('')
+
+    axios
+      .post(`http://localhost:3001/persons`, newPerson)
+      .then(response => {
+        setPersons(persons.concat(newPerson))
+        setNewName('')
+        setnewNumber('')
+      })
   }
 
   // https://stackoverflow.com/questions/35235794/filter-strings-in-array-based-on-content-filter-search-value for filter
