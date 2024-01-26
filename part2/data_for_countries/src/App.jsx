@@ -14,7 +14,7 @@ const Filter = ({setCountryFilter}) => {
   )
 }
 
-const Results = ({results}) => {
+const Results = ({setCountryFilter, results}) => {
   if(results === null || results.length === 0) {
     return null
   }
@@ -27,7 +27,9 @@ const Results = ({results}) => {
     return (
       <div>
         {results.map(result =>
-          <p key={result.name.common}>{result.name.common}</p>
+          <>
+            <p key={result.name.common}>{result.name.common} <button onClick={() => setCountryFilter(result.name.common)}>show</button></p>
+          </>
         )}
       </div>
     )
@@ -78,7 +80,7 @@ const App = () => {
   return (
     <div>
       <Filter setCountryFilter={setCountryFilter} />
-      <Results results={results} />
+      <Results setCountryFilter={setCountryFilter} results={results} />
     </div>
   )
 }
