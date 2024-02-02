@@ -9,11 +9,17 @@ const requestLogger = (req, res, next) => {
     next()
 }
 
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({'error': 'unknown endpoint'})
+}
+
 app.use(requestLogger)
 
 app.get('/', (req, res) => {
     res.send(`<h1>Hello world!</h1>`)
 })
+
+app.use(unknownEndpoint)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
