@@ -130,13 +130,13 @@ const App = () => {
 
     const newPerson = {
       name: newName,
-      number: newNumber,
-      id: `${persons.length + 1}`
+      number: newNumber
     }
 
     ContactService
       .create(newPerson)
       .then(returnedPerson => {
+        console.log(newPerson, returnedPerson)
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setnewNumber('')
@@ -146,6 +146,15 @@ const App = () => {
           setMessage(null)
         }, 5000) 
       })
+      .catch(error => {
+        setMessage(`Name is too short: needs to be at least 3 characters long`)
+        setHaveError(true)
+
+        setTimeout(() => {
+          setMessage(null)
+          setHaveError(false)
+        }, 5000)
+      })
   }
 
   const delName = (id) => {
@@ -154,7 +163,7 @@ const App = () => {
       ContactService
         .remove(id)
         .then(returnedPerson => {
-          setPersons(persons.filter(person => person.id !== returnedPerson.id))
+          setPersons(persons.filter(person => person.id !== id))
         })
         .catch(error => {
           setMessage(`Information of this user has already been removed from the server`)
