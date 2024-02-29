@@ -147,7 +147,8 @@ const App = () => {
         }, 5000) 
       })
       .catch(error => {
-        setMessage(`Name is too short: needs to be at least 3 characters long`)
+        console.log(error)
+        setMessage(`${error.response.data.error}`)
         setHaveError(true)
 
         setTimeout(() => {
